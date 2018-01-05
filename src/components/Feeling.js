@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 const Feeling = (props) => {
   return (
     <View style={styles.containerStyle}>
-      <Text>{props.children}</Text>
+      <Text style={styles.textStyle}>{props.children}</Text>
     </View>
   );
 };
@@ -14,15 +14,21 @@ const styles = {
     borderWidth: 1,
     borderRadius: 2,
     borderColor: '#ddd',
-    borderBottomWidth: 0,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 1,
-    marginLeft: 5,
-    marginRight: 5,
-    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 20,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '40%',
+  },
+  textStyle: {
+
   }
 }
 

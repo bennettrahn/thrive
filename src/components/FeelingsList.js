@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import axios from 'axios';
 import Feeling from './Feeling';
 
 class FeelingsList extends Component {
-  state = { feelings: [] };
-
-  componentWillMount() {
-    axios.get('http://localhost:3000/feelings').then(response => this.setState({ feelings: response.data }));
+  state = {
+    feelings: []
+  };
+  // shouldComponentUpdate
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.query) {
+      axios.get(`http://localhost:3000/feelings?query=${nextProps.query}`).then(response => this.setState({ feelings: response.data }));
+    }
   }
 
   renderFeelings() {
@@ -15,13 +19,29 @@ class FeelingsList extends Component {
   }
 
   render() {
-    console.log(this.state.feelings);
+    // console.log(this.props.query);
+    // console.log(this.state.feelings);
     return (
-      <ScrollView>
-        {this.renderFeelings()}
+      <ScrollView contentContainerStyle={styles.scrollViewStyle}>
+        <View style={styles.listContainerStyle}>
+          {this.renderFeelings()}
+        </View>
       </ScrollView>
     );
   }
+}
+
+const styles = {
+  scrollViewStyle: {
+    // justifyContent: 'center'
+  },
+  listContainerStyle: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    position: 'relative',
+  }
+
 }
 
 export default FeelingsList;
