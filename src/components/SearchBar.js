@@ -1,22 +1,33 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput } from 'react-native';
-import axios from 'axios';
-import FeelingsList from './FeelingsList';
 
-class Input extends Component {
+class SearchBar extends Component {
+  constructor(props) {
+    super(props);
 
-  state = { text: '' };
+    this.state = {
+      text: '',
+    };
+
+    this.handleQuery = this.handleQuery.bind(this)
+  }
+
+  // state = { text: '' };
+
+  handleQuery(text) {
+    this.setState({text});
+    this.props.setQuery(text);
+  }
 
   render() {
     return (
       <View>
         <TextInput
           style={styles.searchBarStyle}
-          onChangeText={(text) => this.setState({text})}
+          onChangeText={(text) => this.handleQuery(text)}
           value={this.state.text}
           autoCapitalize='none'
         />
-        <FeelingsList query={this.state.text}/>
       </View>
     );
   }
@@ -40,4 +51,4 @@ const styles = {
   }
 }
 
-export default Input;
+export default SearchBar;

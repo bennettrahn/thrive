@@ -4,9 +4,27 @@ import axios from 'axios';
 import Feeling from './Feeling';
 
 class FeelingsList extends Component {
-  state = {
-    feelings: []
-  };
+  constructor (props) {
+    super(props);
+    this.state = {
+      feelings: this.props.feelings ? this.props.feelings : []
+    };
+
+    this.handleFeelingClick = this.handleFeelingClick.bind(this);
+  }
+
+
+  handleFeelingClick(feeling) {
+    let feelings = this.state.feelings;
+    const index = feelings.indexOf(feeling);
+    if ( index !== -1 ) {
+      feelings.splice(index, 1);
+    }
+    this.setState(
+      { feelings: feelings }
+    );
+    this.props.setCheckInFeelings(feeling)
+  }
   // shouldComponentUpdate
   componentWillReceiveProps(nextProps) {
     if (nextProps.query) {
@@ -15,7 +33,11 @@ class FeelingsList extends Component {
   }
 
   renderFeelings() {
-    return this.state.feelings.map(feeling => <Feeling key={feeling.id}>{feeling.name}</Feeling>);
+    return this.state.feelings.map(feeling => <Feeling
+      key={feeling.id}
+      onClick={this.handleFeelingClick}
+      feeling={feeling}
+    />);
   }
 
   render() {

@@ -1,16 +1,21 @@
 import React from 'react';
 import { Text, View, AppRegistry } from 'react-native';
 import Header from './src/components/Header';
-import SearchBar from './src/components/SearchBar';
+import Checkin from './src/components/Checkin';
 
 const App = () => {
   return (
-    <View>
+    <View style={styles.appBackgroundStyle}>
       <Header headerText={'thrive'} />
-      <Text>"I'm feeling ..."</Text>
-      <SearchBar />
+      <Checkin />
     </View>
   );
 };
+
+const styles = {
+  appBackgroundStyle: {
+    // backgroundColor: 'rgb(79, 156, 246)',
+  }
+}
 
 AppRegistry.registerComponent('thrive', () => App);
