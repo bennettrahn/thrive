@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput } from 'react-native';
+import axios from 'axios';
 
 class SearchBar extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class SearchBar extends Component {
 
   handleQuery(text) {
     this.setState({text});
-    this.props.setQuery(text);
+    axios.get(`http://localhost:3000/feelings?query=${text}`).then(response => this.props.setSearchedFeelings(response.data));
   }
 
   render() {

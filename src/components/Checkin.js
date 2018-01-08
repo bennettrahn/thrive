@@ -8,35 +8,55 @@ class Checkin extends Component {
     super(props);
     this.state = {
       checkInFeelings: [],
-      // searchedFeelings: [],
-      query: ''
+      searchedFeelings: [],
     };
 
-    this.setQuery = this.setQuery.bind(this);
-    this.setCheckInFeelings = this.setCheckInFeelings.bind(this);
+    this.setSearchedFeelings = this.setSearchedFeelings.bind(this);
+    this.handleFeelingClick = this.handleFeelingClick.bind(this);
   }
 
-  setQuery(query) {
-    this.setState({ query: query })
+  setSearchedFeelings(data) {
+    let searchedFeelings = data;
+    // let doubles = []
+    // this.state.checkInFeelings.forEach((feeling) => {
+    //   data.forEach((dataFeeling) => {
+    //     if (dataFeeling.name === feeling.name) {
+    //       doubles.push(dataFeeling);
+    //     }
+    //   });
+    // });
+    // for (let i=0; i < doubles.length; i++) {
+    //   searchedFeelings.splice(doubles[i], 1);
+    // }
+
+    this.setState({ searchedFeelings: searchedFeelings })
   }
 
-  setCheckInFeelings(feeling) {
-    let feelings = this.state.checkInFeelings
-    feelings.push(feeling)
-    this.setState({ checkInFeelings: feelings})
+  handleFeelingClick(feeling) {
+    let feelings = this.state.searchedFeelings;
+    const index = feelings.indexOf(feeling);
+    if ( index !== -1 ) {
+      feelings.splice(index, 1);
+    }
+    this.setState(
+      { searchedFeelings: feelings }
+    );
+
+    this.state.checkInFeelings.push(feeling)
+    //is this kosher?
   }
 
   render() {
     return (
       <View>
         <FeelingsList feelings={this.state.checkInFeelings}/>
-        <Text>"I'm feeling ..."</Text>
+        <Text>I am feeling ...</Text>
         <SearchBar
-          setQuery={this.setQuery}
+          setSearchedFeelings={this.setSearchedFeelings}
         />
         <FeelingsList
-          query={this.state.query}
-          setCheckInFeelings={this.setCheckInFeelings}
+          handleFeelingClick={this.handleFeelingClick}
+          feelings={this.state.searchedFeelings}
         />
       </View>
     );
