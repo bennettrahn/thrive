@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, TextInput } from 'react-native';
 import SearchBar from './SearchBar';
 import FeelingsList from './FeelingsList';
+import Button from './Button';
+import CheckinDescription from './CheckinDescription';
 
 class Checkin extends Component {
   constructor(props) {
@@ -9,10 +11,14 @@ class Checkin extends Component {
     this.state = {
       checkInFeelings: [],
       searchedFeelings: [],
+      next: false,
+      description: ''
     };
 
     this.setSearchedFeelings = this.setSearchedFeelings.bind(this);
     this.handleFeelingClick = this.handleFeelingClick.bind(this);
+    this.nextButton = this.nextButton.bind(this);
+    this.setDescription = this.setDescription.bind(this);
   }
 
   setSearchedFeelings(data) {
@@ -32,6 +38,13 @@ class Checkin extends Component {
     this.setState({ searchedFeelings: searchedFeelings })
   }
 
+  setDescription(text) {
+    this.setState({ description: text });
+    console.log("Saved checkin:");
+    console.log(this.state.checkInFeelings);
+    console.log(this.state.description);
+  }
+
   handleFeelingClick(feeling) {
     let feelings = this.state.searchedFeelings;
     const index = feelings.indexOf(feeling);
@@ -42,14 +55,27 @@ class Checkin extends Component {
       { searchedFeelings: feelings }
     );
 
-    this.state.checkInFeelings.push(feeling)
-    //is this kosher?
+    this.state.checkInFeelings.push(feeling);
   }
+
+  nextButton() {
+    if (this.state.checkInFeelings.length > 0) {
+      if (this.state.next === true) {
+        return <CheckinDescription
+          setDescription={this.setDescription}
+        />
+      } else {
+        return <Button onPress={() => {this.setState({ next: true })}}>Next</Button>
+      }
+    }
+  }
+
 
   render() {
     return (
       <View>
         <FeelingsList feelings={this.state.checkInFeelings}/>
+        <View>{this.nextButton()}</View>
         <Text>I am feeling ...</Text>
         <SearchBar
           setSearchedFeelings={this.setSearchedFeelings}
