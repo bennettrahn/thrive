@@ -9,6 +9,7 @@ class Body extends Component {
     this.state = {
       loggedIn: false,
       errorText: '',
+      checkinComplete: false,
     };
 
     this.renderBody = this.renderBody.bind(this);
@@ -32,10 +33,13 @@ class Body extends Component {
   renderBody() {
     if (!this.state.loggedIn) {
       return <LoginForm setUser={this.setUser}/>
+    } else if (this.state.checkinComplete) {
+      return <Text style={styles.doneStyle}>Checkin complete!</Text>
     } else {
       return <Checkin
         userId={this.state.userId}
         username={this.state.username}
+        checkinComplete={() => {this.setState({checkinComplete: true})}}
       />
     }
   }
@@ -54,6 +58,12 @@ const styles = {
   errorTextStyle: {
     color: 'red',
     fontSize: 20,
+    padding: 5,
+    textAlign: 'center',
+  },
+  doneStyle: {
+    color: 'blue',
+    fontSize: 40,
     padding: 5,
     textAlign: 'center',
   }

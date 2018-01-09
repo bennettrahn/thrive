@@ -48,7 +48,9 @@ class Checkin extends Component {
       //come back and fix this when the array thing works
     })
     .then(response => {
+      console.log('Successfully posted:');
       console.log(response.data);
+      this.props.checkinComplete();
     })
     .catch(error => {
       console.log(error);
