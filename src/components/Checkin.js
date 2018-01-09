@@ -4,6 +4,7 @@ import SearchBar from './SearchBar';
 import FeelingsList from './FeelingsList';
 import Button from './Button';
 import CheckinDescription from './CheckinDescription';
+import axios from 'axios';
 
 class Checkin extends Component {
   constructor(props) {
@@ -12,13 +13,12 @@ class Checkin extends Component {
       checkInFeelings: [],
       searchedFeelings: [],
       next: false,
-      description: ''
     };
 
     this.setSearchedFeelings = this.setSearchedFeelings.bind(this);
     this.handleFeelingClick = this.handleFeelingClick.bind(this);
     this.nextButton = this.nextButton.bind(this);
-    this.setDescription = this.setDescription.bind(this);
+    this.saveCheckin = this.saveCheckin.bind(this);
   }
 
   setSearchedFeelings(data) {
@@ -38,11 +38,21 @@ class Checkin extends Component {
     this.setState({ searchedFeelings: searchedFeelings })
   }
 
-  setDescription(text) {
+  saveCheckin(text) {
     this.setState({ description: text });
-    console.log("Saved checkin:");
-    console.log(this.state.checkInFeelings);
-    console.log(this.state.description);
+
+    axios.post('http://localhost:3000/checkins/', {
+      user_id: this.props.userId,
+      description: text,
+      feelings: this.state.checkInFeelings[0].id
+      //come back and fix this when the array thing works
+    })
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
 
   handleFeelingClick(feeling) {
@@ -62,7 +72,7 @@ class Checkin extends Component {
     if (this.state.checkInFeelings.length > 0) {
       if (this.state.next === true) {
         return <CheckinDescription
-          setDescription={this.setDescription}
+          saveCheckin={this.saveCheckin}
         />
       } else {
         return <Button onPress={() => {this.setState({ next: true })}}>Next</Button>

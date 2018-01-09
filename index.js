@@ -1,13 +1,13 @@
 import React from 'react';
 import { Text, View, AppRegistry } from 'react-native';
 import Header from './src/components/Header';
-import Checkin from './src/components/Checkin';
+import Body from './src/components/Body';
 
 const App = () => {
   return (
     <View style={styles.appBackgroundStyle}>
       <Header headerText={'thrive'} />
-      <Checkin />
+      <Body />
     </View>
   );
 };

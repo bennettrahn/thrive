@@ -16,7 +16,7 @@ class CheckinDescription extends Component {
           autoCapitalize='none'
           style={styles.textBoxStyle}
         />
-        <Button onPress={() => {this.props.setDescription(this.state.text)}}>Next</Button>
+        <Button onPress={() => {this.props.saveCheckin(this.state.text)}}>Next</Button>
       </View>
     );
   }
