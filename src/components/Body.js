@@ -8,16 +8,17 @@ class Body extends Component {
     super(props);
     this.state = {
       loggedIn: false,
-      errorText: '',
+      errorMessages: {},
       checkinComplete: false,
     };
 
     this.renderBody = this.renderBody.bind(this);
     this.setUser = this.setUser.bind(this);
+    this.renderErrors = this.renderErrors.bind(this);
   }
 
   setUser(data) {
-    this.setState({ errorText: '' });
+    this.setState({ errorMessages: {} });
 
     if (data.id) {
       this.setState({
@@ -26,7 +27,7 @@ class Body extends Component {
         username: data.username
       })
     } else  {
-      this.setState({ errorText: 'invalid username or password' })
+      this.setState({ errorMessages: data.errors })
     }
   }
 
@@ -44,10 +45,19 @@ class Body extends Component {
     }
   }
 
+  renderErrors() {
+    const errorMessages = this.state.errorMessages
+    for (let type in errorMessages) {
+      for (let message of errorMessages[type]) {
+        return <Text>{`${type}: ${message}`}</Text>
+      }
+    }
+  }
+
   render() {
     return (
       <View>
-        <Text style={styles.errorTextStyle}>{this.state.errorText}</Text>
+        <Text style={styles.errorMessagesStyle}>{this.renderErrors()}</Text>
         {this.renderBody()}
       </View>
     );
@@ -55,7 +65,7 @@ class Body extends Component {
 }
 
 const styles = {
-  errorTextStyle: {
+  errorMessagesStyle: {
     color: 'red',
     fontSize: 20,
     padding: 5,

@@ -16,7 +16,15 @@ class SearchBar extends Component {
   }
 
   handleLogin() {
-    axios.get(`http://localhost:3000/users/${this.state.username}`).then(response => this.props.setUser(response.data));
+    axios.get(`http://localhost:3000/users/${this.state.username}`, {
+      params: {
+        username: this.state.username,
+        password: this.state.password
+      }
+    }).then(response => {
+      this.props.setUser(response.data);
+      console.log(response.data);
+    });
   }
 
   handleCreateNewUser() {
@@ -25,6 +33,7 @@ class SearchBar extends Component {
       password: this.state.password
     })
     .then(response => {
+      console.log(response.data);
       this.props.setUser(response.data);
     })
     .catch(error => {

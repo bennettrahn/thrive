@@ -41,10 +41,16 @@ class Checkin extends Component {
   saveCheckin(text) {
     this.setState({ description: text });
 
+    let feelingsArr = [];
+    this.state.checkInFeelings.forEach(feeling => {
+      feelingsArr.push(feeling.id)
+    });
+    console.log(feelingsArr);
+
     axios.post('http://localhost:3000/checkins/', {
       user_id: this.props.userId,
       description: text,
-      feelings: this.state.checkInFeelings[0].id
+      feelings: feelingsArr
       //come back and fix this when the array thing works
     })
     .then(response => {
