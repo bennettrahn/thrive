@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, TextInput } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import SearchBar from './SearchBar';
 import FeelingsList from './FeelingsList';
 import Button from './Button';
@@ -13,6 +14,7 @@ class Checkin extends Component {
       checkInFeelings: [],
       searchedFeelings: [],
       next: false,
+      userId: 1,
     };
 
     this.setSearchedFeelings = this.setSearchedFeelings.bind(this);
@@ -45,7 +47,6 @@ class Checkin extends Component {
     this.state.checkInFeelings.forEach(feeling => {
       feelingsArr.push(feeling.id)
     });
-    console.log(feelingsArr);
 
     axios.post('http://localhost:3000/checkins/', {
       user_id: this.props.userId,
@@ -88,6 +89,9 @@ class Checkin extends Component {
     }
   }
 
+  userLogout() {
+    Actions.Authentication();
+  }
 
   render() {
     return (
@@ -102,6 +106,8 @@ class Checkin extends Component {
           handleFeelingClick={this.handleFeelingClick}
           feelings={this.state.searchedFeelings}
         />
+
+        <Button onPress={this.userLogout}>Log out</Button>
       </View>
     );
   }
