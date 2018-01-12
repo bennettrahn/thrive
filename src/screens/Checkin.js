@@ -58,7 +58,7 @@ class Checkin extends Component {
       .then(response => {
         console.log('Successfully posted:');
         console.log(response.data);
-        // this.props.checkinComplete();
+        Actions.Dashboard();
       })
       .catch(error => {
         console.log(error);

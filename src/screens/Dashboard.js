@@ -22,7 +22,6 @@ class Dashboard extends Component {
   componentWillMount() {
     axios.get(`http://localhost:3000/checkins?username=${username}`)
     .then(response => {
-      console.log(response.data);
       this.setState({checkins: response.data});
     })
     .catch(error => {
@@ -31,7 +30,6 @@ class Dashboard extends Component {
   }
 
   renderCheckins() {
-    console.log(this.state.checkins);
     return this.state.checkins.map(checkin => <CheckinView
       key={checkin.id}
       checkin={checkin}
