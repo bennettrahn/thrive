@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, TextInput } from 'react-native';
+import { AsyncStorage, ScrollView, View, Text, TextInput } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import SearchBar from '../components/SearchBar';
 import FeelingsList from '../components/FeelingsList';
 import Button from '../components/Button';
+import Header from '../components/Header';
 import CheckinDescription from '../components/CheckinDescription';
 import axios from 'axios';
 
@@ -45,22 +47,24 @@ class Checkin extends Component {
     this.state.checkInFeelings.forEach(feeling => {
       feelingsArr.push(feeling.id)
     });
-    console.log(feelingsArr);
 
-    axios.post('http://localhost:3000/checkins/', {
-      user_id: this.props.userId,
-      description: text,
-      feelings: feelingsArr
-      //come back and fix this when the array thing works
-    })
-    .then(response => {
-      console.log('Successfully posted:');
-      console.log(response.data);
-      this.props.checkinComplete();
-    })
-    .catch(error => {
-      console.log(error);
+    AsyncStorage.getItem('username').then((username) => {
+      axios.post('http://localhost:3000/checkins/', {
+        username: username,
+        description: text,
+        feelings: feelingsArr
+        //come back and fix this when the array thing works
+      })
+      .then(response => {
+        console.log('Successfully posted:');
+        console.log(response.data);
+        // this.props.checkinComplete();
+      })
+      .catch(error => {
+        console.log(error);
+      });
     });
+
   }
 
   handleFeelingClick(feeling) {
@@ -88,10 +92,19 @@ class Checkin extends Component {
     }
   }
 
+  async userLogout() {
+    try {
+      await AsyncStorage.removeItem('username');
+      Actions.Login();
+    } catch (error) {
+      console.log('AsyncStorage error' + error.message);
+    }
+  }
 
   render() {
     return (
       <View>
+        <Header headerText='thrive' />
         <FeelingsList feelings={this.state.checkInFeelings}/>
         <View>{this.nextButton()}</View>
         <Text>I am feeling ...</Text>
@@ -102,6 +115,8 @@ class Checkin extends Component {
           handleFeelingClick={this.handleFeelingClick}
           feelings={this.state.searchedFeelings}
         />
+
+        <Button onPress={this.userLogout}>Log out</Button>
       </View>
     );
   }

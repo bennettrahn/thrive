@@ -1,66 +1,98 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { AsyncStorage, View, Text, TextInput } from 'react-native';
 import Button from '../components/Button';
+import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 
-class SearchBar extends Component {
+class LoginForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      username: '',
-      password: ''
+      username: null,
+      password: null
     };
 
-    this.handleLogin = this.handleLogin.bind(this)
+    // this.handleLogin = this.handleLogin.bind(this)
   }
 
-  handleLogin() {
-    axios.get(`http://localhost:3000/users/${this.state.username}`, {
-      params: {
-        username: this.state.username,
-        password: this.state.password
-      }
-    }).then(response => {
-      this.props.setUser(response.data);
-      console.log(response.data);
-    });
+  async saveItem(item, selectedValue) {
+    try {
+      console.log(item);
+      console.log(selectedValue);
+      await AsyncStorage.setItem(item, selectedValue);
+    } catch (error) {
+      console.error('AsyncStorage error: ' + error.message);
+    }
   }
 
-  handleCreateNewUser() {
+  userSignup() {
     axios.post('http://localhost:3000/users/', {
       username: this.state.username,
       password: this.state.password
     })
     .then(response => {
       console.log(response.data);
-      this.props.setUser(response.data);
+      this.saveItem('username', response.data.username);
+      Actions.Checkin();
+      // this.props.setUser(response.data);
     })
     .catch(error => {
       console.log(error);
     });
   }
+  // handleCreateNewUser() {
+  // }
+
+  userLogin() {
+    axios.get(`http://localhost:3000/users/${this.state.username}`, {
+      params: {
+        username: this.state.username,
+        password: this.state.password
+      }
+    }).then(response => {
+      // this.props.setUser(response.data);
+      console.log(response.data);
+      this.saveItem('username', response.data.username);
+      Actions.Checkin();
+    });
+  }
+
+  // handleLogin() {
+  // }
+
+
 
   render() {
     return (
       <View>
         <Text>username:</Text>
         <TextInput
-          style={styles.formInputStyle}
+          editable={true}
           onChangeText={(text) => this.setState({username: text})}
+          placeholder='Username'
+          ref='username'
+          returnKeyType='next'
+          style={styles.formInputStyle}
           value={this.state.username}
           autoCapitalize='none'
         />
         <Text>password:</Text>
         <TextInput
-          style={styles.formInputStyle}
+          editable={true}
           onChangeText={(text) => this.setState({password: text})}
+          placeholder='Password'
+          ref='password'
+          returnKeyType='next'
+          secureTextEntry={true}
+          style={styles.formInputStyle}
           value={this.state.password}
           autoCapitalize='none'
         />
-        <Button onPress={() => {this.handleLogin()}}>Login</Button>
+
+        <Button onPress={this.userLogin.bind(this)}>Login</Button>
         <Text>or</Text>
-        <Button onPress={() => {this.handleCreateNewUser()}}>Create an Account</Button>
+        <Button onPress={this.userSignup.bind(this)}>Create an Account</Button>
       </View>
     );
   }
@@ -84,4 +116,4 @@ const styles = {
   }
 }
 
-export default SearchBar;
+export default LoginForm;
