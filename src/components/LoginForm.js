@@ -18,6 +18,8 @@ class LoginForm extends Component {
 
   async saveItem(item, selectedValue) {
     try {
+      console.log(item);
+      console.log(selectedValue);
       await AsyncStorage.setItem(item, selectedValue);
     } catch (error) {
       console.error('AsyncStorage error: ' + error.message);
@@ -25,36 +27,38 @@ class LoginForm extends Component {
   }
 
   userSignup() {
-    Actions.Checkin();
+    axios.post('http://localhost:3000/users/', {
+      username: this.state.username,
+      password: this.state.password
+    })
+    .then(response => {
+      console.log(response.data);
+      this.saveItem('username', response.data.username);
+      Actions.Checkin();
+      // this.props.setUser(response.data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
   // handleCreateNewUser() {
-  //   axios.post('http://localhost:3000/users/', {
-  //     username: this.state.username,
-  //     password: this.state.password
-  //   })
-  //   .then(response => {
-  //     console.log(response.data);
-  //     this.props.setUser(response.data);
-  //   })
-  //   .catch(error => {
-  //     console.log(error);
-  //   });
   // }
 
   userLogin() {
-    Actions.Checkin();
+    axios.get(`http://localhost:3000/users/${this.state.username}`, {
+      params: {
+        username: this.state.username,
+        password: this.state.password
+      }
+    }).then(response => {
+      // this.props.setUser(response.data);
+      console.log(response.data);
+      this.saveItem('username', response.data.username);
+      Actions.Checkin();
+    });
   }
 
   // handleLogin() {
-  //   axios.get(`http://localhost:3000/users/${this.state.username}`, {
-  //     params: {
-  //       username: this.state.username,
-  //       password: this.state.password
-  //     }
-  //   }).then(response => {
-  //     this.props.setUser(response.data);
-  //     console.log(response.data);
-  //   });
   // }
 
 

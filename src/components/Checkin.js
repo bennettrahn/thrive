@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, TextInput } from 'react-native';
+import { AsyncStorage, ScrollView, View, Text, TextInput } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import SearchBar from './SearchBar';
 import FeelingsList from './FeelingsList';
 import Button from './Button';
+import Header from './Header';
 import CheckinDescription from './CheckinDescription';
 import axios from 'axios';
 
@@ -14,7 +15,6 @@ class Checkin extends Component {
       checkInFeelings: [],
       searchedFeelings: [],
       next: false,
-      userId: 1,
     };
 
     this.setSearchedFeelings = this.setSearchedFeelings.bind(this);
@@ -48,20 +48,23 @@ class Checkin extends Component {
       feelingsArr.push(feeling.id)
     });
 
-    axios.post('http://localhost:3000/checkins/', {
-      user_id: this.props.userId,
-      description: text,
-      feelings: feelingsArr
-      //come back and fix this when the array thing works
-    })
-    .then(response => {
-      console.log('Successfully posted:');
-      console.log(response.data);
-      this.props.checkinComplete();
-    })
-    .catch(error => {
-      console.log(error);
+    AsyncStorage.getItem('username').then((username) => {
+      axios.post('http://localhost:3000/checkins/', {
+        username: username,
+        description: text,
+        feelings: feelingsArr
+        //come back and fix this when the array thing works
+      })
+      .then(response => {
+        console.log('Successfully posted:');
+        console.log(response.data);
+        // this.props.checkinComplete();
+      })
+      .catch(error => {
+        console.log(error);
+      });
     });
+
   }
 
   handleFeelingClick(feeling) {
@@ -89,13 +92,19 @@ class Checkin extends Component {
     }
   }
 
-  userLogout() {
-    Actions.Authentication();
+  async userLogout() {
+    try {
+      await AsyncStorage.removeItem('username');
+      Actions.Login();
+    } catch (error) {
+      console.log('AsyncStorage error' + error.message);
+    }
   }
 
   render() {
     return (
       <View>
+        <Header headerText='thrive' />
         <FeelingsList feelings={this.state.checkInFeelings}/>
         <View>{this.nextButton()}</View>
         <Text>I am feeling ...</Text>
