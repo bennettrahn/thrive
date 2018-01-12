@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text, TextInput } from 'react-native';
-import SearchBar from './SearchBar';
-import FeelingsList from './FeelingsList';
-import Button from './Button';
-import CheckinDescription from './CheckinDescription';
+import SearchBar from '../components/SearchBar';
+import FeelingsList from '../components/FeelingsList';
+import Button from '../components/Button';
+import CheckinDescription from '../components/CheckinDescription';
 import axios from 'axios';
 
 class Checkin extends Component {

@@ -7,7 +7,7 @@ const App = () => {
   return (
     <View style={styles.appBackgroundStyle}>
       <Header headerText={'thrive'} />
-      <Body />
+      <Dashboard />
     </View>
   );
 };

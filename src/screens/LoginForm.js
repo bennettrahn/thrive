@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput } from 'react-native';
-import Button from './Button';
+import Button from '../components/Button';
 import axios from 'axios';
 
 class SearchBar extends Component {
