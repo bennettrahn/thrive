@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, ActivityIndicator, AsyncStorage } from 'react-native';
+import { AppRegistry, ActivityIndicator, AsyncStorage, Text } from 'react-native';
 import { Router, Scene, Actions } from 'react-native-router-flux';
 import LoginForm from './src/screens/LoginForm';
 import Checkin from './src/screens/Checkin';
@@ -35,17 +35,25 @@ class App extends Component {
               hideNavBar={true}
               initial={this.state.hasToken}
             >
-              <Scene key='Dashboard'
-                rightTitle='rightbutton'
-                onRight={() => Actions.Checkin()}
-                hideNavBar={false}
-                component={Dashboard}
-                title='Dashboard'
-              />
-              <Scene key='Checkin'
-                component={Checkin}
-                title='Check In'
-              />
+              <Scene key='tabbar'
+                tabs={true}
+                tabbarStyle={{ backgroundColor: 'green' }}
+              >
+                <Scene key='Dashboard'
+                  rightTitle='rightbutton'
+                  icon={() => <Text>;)</Text>}
+                  onRight={() => Actions.Checkin()}
+                  hideNavBar={false}
+                  component={Dashboard}
+                  title='Dashboard'
+                />
+                <Scene key='Checkin'
+                  hideNavBar={true}
+                  icon={() => <Text>:P</Text>}
+                  component={Checkin}
+                  title='Check In'
+                />
+              </Scene>
             </Scene>
           </Scene>
         </Router>
@@ -54,17 +62,5 @@ class App extends Component {
   }
 };
 
-// <Scene key='main'>
-//   <Scene key='Checkin'
-//     component={Checkin}
-//     hideNavBar={true}
-//     initial={this.state.hasToken}
-//     title='Check In'
-//   />
-//   <Scene key='Dashboard'
-//     component={Dashboard}
-//     title='Dashboard'
-//   />
-// </Scene>
 
 AppRegistry.registerComponent('thrive', () => App);
