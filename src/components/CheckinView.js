@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
+import FeelingsList from './FeelingsList'
+
 
 class CheckinView extends Component {
   constructor(props) {
@@ -8,7 +10,8 @@ class CheckinView extends Component {
 
     this.state = {
       description: props.checkin.description,
-      date: props.checkin.created_at
+      date: props.checkin.created_at,
+      feelings: props.checkin.feelings
     };
   }
 
@@ -19,9 +22,10 @@ class CheckinView extends Component {
   }
 
   render() {
-    console.log(this.state.date);
+    console.log(this.props.checkin);
     return (
       <View>
+        <FeelingsList feelings={this.state.feelings} />
         <Text>{this.state.description}</Text>
         <Text> at: {this.state.date}</Text>
       </View>

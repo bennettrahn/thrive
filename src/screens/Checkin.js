@@ -53,7 +53,6 @@ class Checkin extends Component {
         username: username,
         description: text,
         feelings: feelingsArr
-        //come back and fix this when the array thing works
       })
       .then(response => {
         console.log('Successfully posted:');
