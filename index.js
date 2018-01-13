@@ -35,14 +35,14 @@ class App extends Component {
               hideNavBar={true}
               initial={this.state.hasToken}
             >
-              <Scene key='Checkin'
-                component={Checkin}
-                title='Check In'
-              />
               <Scene key='Dashboard'
                 hideNavBar={false}
                 component={Dashboard}
                 title='Dashboard'
+              />
+              <Scene key='Checkin'
+                component={Checkin}
+                title='Check In'
               />
             </Scene>
           </Scene>

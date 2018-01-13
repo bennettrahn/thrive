@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, TextInput } from 'react-native';
+import { AsyncStorage, ScrollView, View, Text, TextInput } from 'react-native';
 // import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 
@@ -20,12 +20,14 @@ class Dashboard extends Component {
   }
 
   componentWillMount() {
-    axios.get(`http://localhost:3000/checkins?username=${username}`)
-    .then(response => {
-      this.setState({checkins: response.data});
-    })
-    .catch(error => {
-      console.log(error);
+    AsyncStorage.getItem('username').then((username) => {
+      axios.get(`http://localhost:3000/checkins?username=${username}`)
+      .then(response => {
+        this.setState({checkins: response.data});
+      })
+      .catch(error => {
+        console.log(error);
+      });
     });
   }
 
@@ -38,11 +40,10 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <View>
-        <Header headerText='thrive' />
+      <ScrollView>
         <Text>Your Checkins:</Text>
         {this.renderCheckins()}
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -50,7 +51,5 @@ class Dashboard extends Component {
 const styles = {
 
 }
-
-const username = 'me'
 
 export default Dashboard;
