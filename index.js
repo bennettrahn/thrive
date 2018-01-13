@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppRegistry, ActivityIndicator, AsyncStorage } from 'react-native';
-import { Router, Scene } from 'react-native-router-flux';
+import { Router, Scene, Actions } from 'react-native-router-flux';
 import LoginForm from './src/screens/LoginForm';
 import Checkin from './src/screens/Checkin';
 import Dashboard from './src/screens/Dashboard';
@@ -36,6 +36,8 @@ class App extends Component {
               initial={this.state.hasToken}
             >
               <Scene key='Dashboard'
+                rightTitle='rightbutton'
+                onRight={() => Actions.Checkin()}
                 hideNavBar={false}
                 component={Dashboard}
                 title='Dashboard'

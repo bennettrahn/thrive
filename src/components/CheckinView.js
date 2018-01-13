@@ -22,7 +22,7 @@ class CheckinView extends Component {
   }
 
   render() {
-    console.log(this.props.checkin);
+    // console.log(this.props.checkin);
     return (
       <View>
         <FeelingsList feelings={this.state.feelings} />
