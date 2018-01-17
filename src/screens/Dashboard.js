@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { AsyncStorage, ScrollView, View, Text, TextInput } from 'react-native';
 // import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
-import { LineChart } from 'react-native-svg-charts';
+import { LineChart, XAxis } from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
 
 import Header from '../components/Header';
@@ -15,6 +15,9 @@ class Dashboard extends Component {
     this.state = {
       // username: null,
       checkins: [],
+      feelingData: [],
+      dateData: []
+
     };
 
     this.renderCheckins = this.renderCheckins.bind(this);
@@ -27,7 +30,23 @@ class Dashboard extends Component {
       axios.get(`http://localhost:3000/checkins?username=${username}`)
       .then(response => {
         this.setState({checkins: response.data});
-        // console.log(response.data);
+
+        let feelingData = []
+        let dateData = []
+        response.data.forEach((checkin) => {
+          let feelingTotal = 0
+          checkin.feelings.forEach((feeling) => {
+            feelingTotal += feeling.rating;
+          });
+          const feelingAvg = feelingTotal / checkin.feelings.length;
+          feelingData.push(feelingAvg);
+
+          let date = new Date(checkin.created_at);
+          date = date.getDate();
+          dateData.push(date)
+        });
+        this.setState({ feelingData: feelingData })
+        this.setState({ dateData: dateData })
       })
       .catch(error => {
         console.log(error);
@@ -35,36 +54,56 @@ class Dashboard extends Component {
     });
   }
 
-  getCheckinData() {
-    let data = []
-    this.state.checkins.forEach((checkin) => {
-      checkin.feelings.forEach((feeling) => {
-        data.push(feeling.rating);
-      });
-    });
-    return data
-  }
+  // getCheckinData() {
+  //   let data = []
+  //   let datesData = []
+  //   this.state.checkins.forEach((checkin) => {
+  //     let feelingTotal = 0
+  //     checkin.feelings.forEach((feeling) => {
+  //       feelingTotal += feeling.rating;
+  //     });
+  //     const feelingAvg = feelingTotal / checkin.feelings.length;
+  //     data.push(feelingAvg);
+  //
+  //     const date = new Date(checkin.created_at);
+  //     datesData.push(date)
+  //   });
+  //   console.log(datesData);
+  //   return data
+  // }
 
   renderCheckins() {
-    const data = this.getCheckinData();
-    //
+    // const data = this.getCheckinData();
+    const data = this.state.feelingData;
+    const dateData = this.state.dateData;
+    console.log(dateData);
 
     return (
-      <LineChart
+      <View>
+        <LineChart
           style={ { height: 200 } }
           dataPoints={ data }
+          numberOfTicks={5}
           fillColor={ 'purple' }
-          shadowOffset={3}
+          shadowOffset={.5}
           svg={ {
-              stroke: 'rgb(134, 65, 244)',
+            stroke: 'rgb(134, 65, 244)',
           } }
           shadowSvg={ {
-              stroke: 'rgba(134, 65, 244, 0.2)',
-              strokeWidth: 5,
+            stroke: 'rgba(134, 65, 244, 0.2)',
+            strokeWidth: 5,
           } }
           contentInset={ { top: 20, bottom: 20 } }
           curve={shape.curveLinear}
-      />
+        />
+        <XAxis
+          style={ { paddingVertical: 10 } }
+          values={ dateData }
+          formatLabel={ (value, index) => value }
+          chartType={ XAxis.Type.LINE }
+          labelStyle={ { color: 'grey' } }
+        />
+      </View>
     );
     // return this.state.checkins.map(checkin => <CheckinView
     //   key={checkin.id}

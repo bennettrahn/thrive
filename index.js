@@ -5,6 +5,7 @@ import LoginForm from './src/screens/LoginForm';
 import Checkin from './src/screens/Checkin';
 import Dashboard from './src/screens/Dashboard';
 
+
 class App extends Component {
   constructor() {
     super();
@@ -62,5 +63,5 @@ class App extends Component {
   }
 };
 
-
+// AppRegistry.registerComponent('thrive', () => ExtrasExample);
 AppRegistry.registerComponent('thrive', () => App);
