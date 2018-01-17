@@ -39,14 +39,14 @@ class App extends Component {
                 tabs={true}
                 tabbarStyle={{ backgroundColor: 'green' }}
               >
-                <Scene key='Dashboard'
-                  rightTitle='rightbutton'
-                  icon={() => <Text>;)</Text>}
-                  onRight={() => Actions.Checkin()}
-                  hideNavBar={false}
-                  component={Dashboard}
-                  title='Dashboard'
-                />
+              <Scene key='Dashboard'
+                rightTitle='rightbutton'
+                icon={() => <Text>;)</Text>}
+                onRight={() => Actions.Checkin()}
+                hideNavBar={false}
+                component={Dashboard}
+                title='Dashboard'
+              />
                 <Scene key='Checkin'
                   hideNavBar={true}
                   icon={() => <Text>:P</Text>}

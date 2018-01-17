@@ -3,8 +3,7 @@ import { AsyncStorage, View, Text, TextInput } from 'react-native';
 import Button from '../components/Button';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
-import { LineChart } from 'react-native-svg-charts';
-import * as shape from 'd3-shape'
+
 
 class LoginForm extends Component {
   constructor(props) {
@@ -37,14 +36,11 @@ class LoginForm extends Component {
       console.log(response.data);
       this.saveItem('username', response.data.username);
       Actions.Checkin();
-      // this.props.setUser(response.data);
     })
     .catch(error => {
       console.log(error);
     });
   }
-  // handleCreateNewUser() {
-  // }
 
   userLogin() {
     axios.get(`http://localhost:3000/users/${this.state.username}`, {
@@ -66,27 +62,10 @@ class LoginForm extends Component {
 
 
   render() {
-
-    const data = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
-
     return (
 
       <View>
-        <LineChart
-              style={ { height: 200 } }
-              dataPoints={ data }
-              fillColor={ 'purple' }
-              shadowOffset={3}
-              svg={ {
-                  stroke: 'rgb(134, 65, 244)',
-              } }
-              shadowSvg={ {
-                  stroke: 'rgba(134, 65, 244, 0.2)',
-                  strokeWidth: 5,
-              } }
-              contentInset={ { top: 20, bottom: 20 } }
-              curve={shape.curveLinear}
-          />
+
         <Text>username:</Text>
         <TextInput
           editable={true}

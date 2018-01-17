@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { AsyncStorage, ScrollView, View, Text, TextInput } from 'react-native';
 // import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
+import { LineChart } from 'react-native-svg-charts';
+import * as shape from 'd3-shape';
 
 import Header from '../components/Header';
 import CheckinView from '../components/CheckinView';
@@ -16,6 +18,7 @@ class Dashboard extends Component {
     };
 
     this.renderCheckins = this.renderCheckins.bind(this);
+    this.renderCheckins = this.renderCheckins.bind(this);
 
   }
 
@@ -24,6 +27,7 @@ class Dashboard extends Component {
       axios.get(`http://localhost:3000/checkins?username=${username}`)
       .then(response => {
         this.setState({checkins: response.data});
+        // console.log(response.data);
       })
       .catch(error => {
         console.log(error);
@@ -31,11 +35,41 @@ class Dashboard extends Component {
     });
   }
 
+  getCheckinData() {
+    let data = []
+    this.state.checkins.forEach((checkin) => {
+      checkin.feelings.forEach((feeling) => {
+        data.push(feeling.rating);
+      });
+    });
+    return data
+  }
+
   renderCheckins() {
-    return this.state.checkins.map(checkin => <CheckinView
-      key={checkin.id}
-      checkin={checkin}
-    />);
+    const data = this.getCheckinData();
+    //
+
+    return (
+      <LineChart
+          style={ { height: 200 } }
+          dataPoints={ data }
+          fillColor={ 'purple' }
+          shadowOffset={3}
+          svg={ {
+              stroke: 'rgb(134, 65, 244)',
+          } }
+          shadowSvg={ {
+              stroke: 'rgba(134, 65, 244, 0.2)',
+              strokeWidth: 5,
+          } }
+          contentInset={ { top: 20, bottom: 20 } }
+          curve={shape.curveLinear}
+      />
+    );
+    // return this.state.checkins.map(checkin => <CheckinView
+    //   key={checkin.id}
+    //   checkin={checkin}
+    // />);
   }
 
   render() {
