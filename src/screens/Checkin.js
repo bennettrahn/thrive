@@ -57,6 +57,12 @@ class Checkin extends Component {
       .then(response => {
         console.log('Successfully posted:');
         console.log(response.data);
+        this.setState({
+          checkInFeelings: [],
+          searchedFeelings: [],
+          next: false,
+          description: ''
+        });
         Actions.Dashboard();
       })
       .catch(error => {
