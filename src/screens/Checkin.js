@@ -21,6 +21,7 @@ class Checkin extends Component {
     this.handleFeelingClick = this.handleFeelingClick.bind(this);
     this.nextButton = this.nextButton.bind(this);
     this.saveCheckin = this.saveCheckin.bind(this);
+    this.renderSearchBar = this.renderSearchBar.bind(this);
   }
 
   setSearchedFeelings(data) {
@@ -61,7 +62,6 @@ class Checkin extends Component {
           checkInFeelings: [],
           searchedFeelings: [],
           next: false,
-          description: ''
         });
         Actions.Dashboard();
       })
@@ -97,12 +97,20 @@ class Checkin extends Component {
     }
   }
 
-  async userLogout() {
-    try {
-      await AsyncStorage.removeItem('username');
-      Actions.Login();
-    } catch (error) {
-      console.log('AsyncStorage error' + error.message);
+  renderSearchBar() {
+    if (!this.state.next) {
+      return (
+        <View>
+          <Text>I am feeling ...</Text>
+          <SearchBar
+            setSearchedFeelings={this.setSearchedFeelings}
+          />
+          <FeelingsList
+            handleFeelingClick={this.handleFeelingClick}
+            feelings={this.state.searchedFeelings}
+          />
+        </View>
+      )
     }
   }
 
@@ -111,17 +119,8 @@ class Checkin extends Component {
       <View>
         <Header headerText='thrive' />
         <FeelingsList feelings={this.state.checkInFeelings}/>
-        <View>{this.nextButton()}</View>
-        <Text>I am feeling ...</Text>
-        <SearchBar
-          setSearchedFeelings={this.setSearchedFeelings}
-        />
-        <FeelingsList
-          handleFeelingClick={this.handleFeelingClick}
-          feelings={this.state.searchedFeelings}
-        />
-
-        <Button onPress={this.userLogout}>Log out</Button>
+        {this.nextButton()}
+        {this.renderSearchBar()}
       </View>
     );
   }
