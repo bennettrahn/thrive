@@ -113,12 +113,15 @@ class Dashboard extends Component {
 
   render() {
     return (
+      <View>
+      <Header headerText='thrive' />
       <ScrollView>
         <Text>Your Checkins:</Text>
         {this.renderCheckins()}
         <Text>Most common:</Text>
         {this.mostCommon()}
       </ScrollView>
+      </View>
     );
   }
 }

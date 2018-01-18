@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, ActivityIndicator, AsyncStorage, Text } from 'react-native';
+import { AppRegistry, ActivityIndicator, AsyncStorage, Text, View } from 'react-native';
 import { Router, Scene, Actions } from 'react-native-router-flux';
 import LoginForm from './src/screens/LoginForm';
 import Checkin from './src/screens/Checkin';
@@ -44,7 +44,7 @@ class App extends Component {
                 rightTitle='rightbutton'
                 icon={() => <Text>;)</Text>}
                 onRight={() => Actions.Checkin()}
-                hideNavBar={false}
+                hideNavBar={true}
                 component={Dashboard}
                 title='Dashboard'
               />

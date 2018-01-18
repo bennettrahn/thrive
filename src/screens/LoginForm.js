@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { AsyncStorage, View, Text, TextInput } from 'react-native';
-import Button from '../components/Button';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
+
+import Button from '../components/Button';
+import Header from '../components/Header';
+
 
 
 class LoginForm extends Component {
@@ -65,7 +68,7 @@ class LoginForm extends Component {
     return (
 
       <View>
-
+        <Header headerText='thrive' login={true} />
         <Text>username:</Text>
         <TextInput
           editable={true}

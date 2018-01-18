@@ -1,19 +1,49 @@
-import React from 'react';
-import { Text, View, Image } from 'react-native';
+import React, { Component } from 'react';
+import { AsyncStorage, Text, View, Image, TouchableOpacity } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
-const Header = (props) => {
-  const { textStyle, viewStyle, iconStyle, navStyle } = styles;
+class Header extends Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <View style={viewStyle}>
-      <Text style={textStyle}>{props.headerText}</Text>
-      <Image
-        style={iconStyle}
-        source={{ uri: 'https://d30y9cdsu7xlg0.cloudfront.net/png/152571-200.png' }}
-      />
-      <Text style={navStyle}>nav</Text>
-    </View>
-  );
+    this.renderRight = this.renderRight.bind(this);
+  }
+
+  async userLogout() {
+    try {
+      await AsyncStorage.removeItem('username');
+      Actions.Login();
+    } catch (error) {
+      console.log('AsyncStorage error' + error.message);
+    }
+  }
+
+  renderRight() {
+    if (this.props.login) {
+      return <Text> Welcome </Text>
+    } else {
+      return (
+        <TouchableOpacity onPress={this.userLogout}>
+          <Text>Logout</Text>
+        </TouchableOpacity>
+      );    
+    }
+  }
+
+  render () {
+    const { textStyle, viewStyle, iconStyle, navStyle } = styles;
+
+    return (
+      <View style={viewStyle}>
+        <Text style={textStyle}>{this.props.headerText}</Text>
+        <Image
+          style={iconStyle}
+          source={{ uri: 'https://d30y9cdsu7xlg0.cloudfront.net/png/152571-200.png' }}
+        />
+        {this.renderRight()}
+      </View>
+    );
+  }
 };
 
 const styles = {
