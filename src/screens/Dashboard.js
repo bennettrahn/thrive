@@ -16,25 +16,25 @@ class Dashboard extends Component {
       // username: null,
       checkins: [],
       feelingData: [],
-      dateData: []
-
+      dateData: [],
     };
 
     this.renderCheckins = this.renderCheckins.bind(this);
-    this.renderCheckins = this.renderCheckins.bind(this);
+    this.mostCommon = this.mostCommon.bind(this);
 
   }
 
   componentWillMount() {
-    AsyncStorage.getItem('username').then((username) => {
+    AsyncStorage.getItem('username')
+    .then((username) => {
       axios.get(`http://localhost:3000/checkins?username=${username}`)
       .then(response => {
         this.setState({checkins: response.data});
 
-        let feelingData = []
-        let dateData = []
+        let feelingData = [];
+        let dateData = [];
         response.data.forEach((checkin) => {
-          let feelingTotal = 0
+          let feelingTotal = 0;
           checkin.feelings.forEach((feeling) => {
             feelingTotal += feeling.rating;
           });
@@ -43,40 +43,28 @@ class Dashboard extends Component {
 
           let date = new Date(checkin.created_at);
           date = date.getDate();
-          dateData.push(date)
+          dateData.push(date);
         });
-        this.setState({ feelingData: feelingData })
-        this.setState({ dateData: dateData })
+        this.setState({ feelingData: feelingData });
+        this.setState({ dateData: dateData });
       })
       .catch(error => {
         console.log(error);
       });
     });
+
+    AsyncStorage.getItem('username')
+    .then((username) => {
+      axios.get(`http://localhost:3000/checkins/categories?username=${username}`)
+      .then(response => {
+        this.setState({ categories: response.data });
+      })
+    });
   }
 
-  // getCheckinData() {
-  //   let data = []
-  //   let datesData = []
-  //   this.state.checkins.forEach((checkin) => {
-  //     let feelingTotal = 0
-  //     checkin.feelings.forEach((feeling) => {
-  //       feelingTotal += feeling.rating;
-  //     });
-  //     const feelingAvg = feelingTotal / checkin.feelings.length;
-  //     data.push(feelingAvg);
-  //
-  //     const date = new Date(checkin.created_at);
-  //     datesData.push(date)
-  //   });
-  //   console.log(datesData);
-  //   return data
-  // }
-
   renderCheckins() {
-    // const data = this.getCheckinData();
     const data = this.state.feelingData;
     const dateData = this.state.dateData;
-    console.log(dateData);
 
     return (
       <View>
@@ -111,11 +99,25 @@ class Dashboard extends Component {
     // />);
   }
 
+  mostCommon() {
+    let topCat;
+    if (this.state.categories) {
+      topCat = this.state.categories[0][0];
+    } else {
+      topCat = "word"
+    }
+    return (
+      <Text>{topCat}</Text>
+    );
+  }
+
   render() {
     return (
       <ScrollView>
         <Text>Your Checkins:</Text>
         {this.renderCheckins()}
+        <Text>Most common:</Text>
+        {this.mostCommon()}
       </ScrollView>
     );
   }
