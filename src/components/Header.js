@@ -26,7 +26,7 @@ class Header extends Component {
         <TouchableOpacity onPress={this.userLogout}>
           <Text>Logout</Text>
         </TouchableOpacity>
-      );    
+      );
     }
   }
 
@@ -38,13 +38,14 @@ class Header extends Component {
         <Text style={textStyle}>{this.props.headerText}</Text>
         <Image
           style={iconStyle}
-          source={{ uri: 'https://d30y9cdsu7xlg0.cloudfront.net/png/152571-200.png' }}
+          source={require('../../succulent.png')}
         />
         {this.renderRight()}
       </View>
     );
   }
 };
+// source={{ uri: 'https://d30y9cdsu7xlg0.cloudfront.net/png/152571-200.png' }}
 
 const styles = {
   viewStyle: {

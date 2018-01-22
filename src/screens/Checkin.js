@@ -116,12 +116,12 @@ class Checkin extends Component {
 
   render() {
     return (
-      <View>
+      <ScrollView>
         <Header headerText='thrive' />
         <FeelingsList feelings={this.state.checkInFeelings}/>
         {this.nextButton()}
         {this.renderSearchBar()}
-      </View>
+      </ScrollView>
     );
   }
 }

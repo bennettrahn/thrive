@@ -17,13 +17,12 @@ class LoginForm extends Component {
       password: null
     };
 
-    // this.handleLogin = this.handleLogin.bind(this)
   }
 
   async saveItem(item, selectedValue) {
     try {
-      console.log(item);
-      console.log(selectedValue);
+      // console.log(item);
+      // console.log(selectedValue);
       await AsyncStorage.setItem(item, selectedValue);
     } catch (error) {
       console.error('AsyncStorage error: ' + error.message);
@@ -52,15 +51,13 @@ class LoginForm extends Component {
         password: this.state.password
       }
     }).then(response => {
-      // this.props.setUser(response.data);
       console.log(response.data);
       this.saveItem('username', response.data.username);
-      Actions.Checkin();
+      Actions.main();
+      console.log(Actions);
     });
   }
 
-  // handleLogin() {
-  // }
 
 
 
@@ -69,40 +66,41 @@ class LoginForm extends Component {
 
       <View>
         <Header headerText='thrive' login={true} />
-        <Text>username:</Text>
-        <TextInput
-          editable={true}
-          onChangeText={(text) => this.setState({username: text})}
-          placeholder='Username'
-          ref='username'
-          returnKeyType='next'
-          style={styles.formInputStyle}
-          value={this.state.username}
-          autoCapitalize='none'
-        />
-        <Text>password:</Text>
-        <TextInput
-          editable={true}
-          onChangeText={(text) => this.setState({password: text})}
-          placeholder='Password'
-          ref='password'
-          returnKeyType='next'
-          secureTextEntry={true}
-          style={styles.formInputStyle}
-          value={this.state.password}
-          autoCapitalize='none'
-        />
+        <View style={styles.loginStyle}>
+          <TextInput
+            editable={true}
+            onChangeText={(text) => this.setState({username: text})}
+            placeholder='Username'
+            ref='username'
+            returnKeyType='next'
+            style={styles.formInputStyle}
+            value={this.state.username}
+            autoCapitalize='none'
+          />
+          <TextInput
+            editable={true}
+            onChangeText={(text) => this.setState({password: text})}
+            placeholder='Password'
+            ref='password'
+            returnKeyType='next'
+            secureTextEntry={true}
+            style={styles.formInputStyle}
+            value={this.state.password}
+            autoCapitalize='none'
+          />
 
-        <Button onPress={this.userLogin.bind(this)}>Login</Button>
-        <Text>or</Text>
-        <Button onPress={this.userSignup.bind(this)}>Create an Account</Button>
-
+          <Button onPress={this.userLogin.bind(this)}>Login</Button>
+          <Button onPress={this.userSignup.bind(this)}>Create an Account</Button>
+        </View>
       </View>
     );
   }
 }
-// onPress={() => {this.props.setDescription(this.state.text)}}
 const styles = {
+  loginStyle: {
+    margin: 20,
+    
+  },
   formInputStyle: {
     height: 40,
     borderColor: '#000',
