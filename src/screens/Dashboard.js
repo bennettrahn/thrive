@@ -6,7 +6,9 @@ import { LineChart, XAxis } from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
 
 import Header from '../components/Header';
-import CheckinView from '../components/CheckinView';
+import CheckinList from '../components/CheckinList';
+import RatingLineChart from '../components/RatingLineChart';
+
 
 class Dashboard extends Component {
   constructor(props) {
@@ -19,8 +21,9 @@ class Dashboard extends Component {
       dateData: [],
     };
 
-    this.renderCheckins = this.renderCheckins.bind(this);
+    // this.renderLineChart = this.renderLineChart.bind(this);
     this.mostCommon = this.mostCommon.bind(this);
+    // this.checkinList = this.checkinList.bind(this);
 
   }
 
@@ -30,23 +33,6 @@ class Dashboard extends Component {
       axios.get(`http://localhost:3000/checkins?username=${username}`)
       .then(response => {
         this.setState({checkins: response.data});
-
-        let feelingData = [];
-        let dateData = [];
-        response.data.forEach((checkin) => {
-          let feelingTotal = 0;
-          checkin.feelings.forEach((feeling) => {
-            feelingTotal += feeling.rating;
-          });
-          const feelingAvg = feelingTotal / checkin.feelings.length;
-          feelingData.push(feelingAvg);
-
-          let date = new Date(checkin.created_at);
-          date = date.getDate();
-          dateData.push(date);
-        });
-        this.setState({ feelingData: feelingData });
-        this.setState({ dateData: dateData });
       })
       .catch(error => {
         console.log(error);
@@ -60,43 +46,6 @@ class Dashboard extends Component {
         this.setState({ categories: response.data });
       })
     });
-  }
-
-  renderCheckins() {
-    const data = this.state.feelingData;
-    const dateData = this.state.dateData;
-
-    return (
-      <View>
-        <LineChart
-          style={ { height: 200 } }
-          dataPoints={ data }
-          numberOfTicks={5}
-          fillColor={ 'purple' }
-          shadowOffset={.5}
-          svg={ {
-            stroke: 'rgb(134, 65, 244)',
-          } }
-          shadowSvg={ {
-            stroke: 'rgba(134, 65, 244, 0.2)',
-            strokeWidth: 5,
-          } }
-          contentInset={ { top: 20, bottom: 20 } }
-          curve={shape.curveLinear}
-        />
-        <XAxis
-          style={ { paddingVertical: 10 } }
-          values={ dateData }
-          formatLabel={ (value, index) => value }
-          chartType={ XAxis.Type.LINE }
-          labelStyle={ { color: 'grey' } }
-        />
-      </View>
-    );
-    // return this.state.checkins.map(checkin => <CheckinView
-    //   key={checkin.id}
-    //   checkin={checkin}
-    // />);
   }
 
   mostCommon() {
@@ -117,9 +66,11 @@ class Dashboard extends Component {
       <Header headerText='thrive' />
       <ScrollView>
         <Text>Your Checkins:</Text>
-        {this.renderCheckins()}
+        <RatingLineChart checkins={this.state.checkins}/>
         <Text>Most common:</Text>
         {this.mostCommon()}
+        <Text>This week in review:</Text>
+        <CheckinList checkins={this.state.checkins}/>
       </ScrollView>
       </View>
     );
@@ -127,7 +78,9 @@ class Dashboard extends Component {
 }
 
 const styles = {
-
+  chartWholeStyle: {
+    margin: 20,
+  }
 }
 
 export default Dashboard;

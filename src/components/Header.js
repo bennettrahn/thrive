@@ -20,12 +20,12 @@ class Header extends Component {
 
   renderRight() {
     if (this.props.login) {
-      return <Text> Welcome </Text>
+      return <Text style={styles.navStyle}>Welcome</Text>
     } else {
       return (
-        <TouchableOpacity onPress={this.userLogout}>
-          <Text>Logout</Text>
-        </TouchableOpacity>
+        <TouchableOpacity onPress={this.userLogout} style={styles.navTouchStyle}>
+          <Text style={styles.navTextStyle}>Logout </Text>
+          </TouchableOpacity>
       );
     }
   }
@@ -38,7 +38,7 @@ class Header extends Component {
         <Text style={textStyle}>{this.props.headerText}</Text>
         <Image
           style={iconStyle}
-          source={require('../../succulent.png')}
+          source={require('../../icon.png')}
         />
         {this.renderRight()}
       </View>
@@ -68,15 +68,23 @@ const styles = {
     color: 'rgb(45, 122, 43)',
     fontFamily: 'Helvetica',
   },
-  navStyle: {
-    fontSize: 20,
+  navStyle:{
     padding: 5,
     width: '30%',
     textAlign: 'right',
+    fontSize: 16,
+  },
+  navTouchStyle: {
+    padding: 5,
+    width: '30%',
+  },
+  navTextStyle:{
+    textAlign: 'right',
+    fontSize: 16,
   },
   iconStyle: {
-    height: 20,
-    width: 20,
+    height: 40,
+    width: 40,
   },
 };
 

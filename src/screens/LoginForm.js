@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, View, Text, TextInput } from 'react-native';
+import { AsyncStorage, View, Text, TextInput, ImageBackground } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 
@@ -54,7 +54,6 @@ class LoginForm extends Component {
       console.log(response.data);
       this.saveItem('username', response.data.username);
       Actions.main();
-      console.log(Actions);
     });
   }
 
@@ -66,6 +65,10 @@ class LoginForm extends Component {
 
       <View>
         <Header headerText='thrive' login={true} />
+        <ImageBackground
+          style={styles.BackgroundImage}
+          source={require('../../succulents.jpg')}
+        >
         <View style={styles.loginStyle}>
           <TextInput
             editable={true}
@@ -92,6 +95,7 @@ class LoginForm extends Component {
           <Button onPress={this.userLogin.bind(this)}>Login</Button>
           <Button onPress={this.userSignup.bind(this)}>Create an Account</Button>
         </View>
+        </ImageBackground>
       </View>
     );
   }
@@ -99,7 +103,11 @@ class LoginForm extends Component {
 const styles = {
   loginStyle: {
     margin: 20,
-    
+    paddingTop: 75
+  },
+  BackgroundImage: {
+    width: 375,
+    height: 700
   },
   formInputStyle: {
     height: 40,

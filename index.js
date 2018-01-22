@@ -40,17 +40,17 @@ class App extends Component {
                 tabs={true}
                 tabbarStyle={{ backgroundColor: 'green' }}
               >
-                <Scene key='Checkin'
-                  hideNavBar={true}
-                  icon={() => <Text>:P</Text>}
-                  component={Checkin}
-                  title='Checkin'
-                />
                 <Scene key='Dashboard'
                   icon={() => <Text>;)</Text>}
                   hideNavBar={true}
                   component={Dashboard}
                   title='Dashboard'
+                />
+                <Scene key='Checkin'
+                  hideNavBar={true}
+                  icon={() => <Text>:P</Text>}
+                  component={Checkin}
+                  title='Checkin'
                 />
               </Scene>
             </Scene>
