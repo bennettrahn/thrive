@@ -8,6 +8,7 @@ import * as shape from 'd3-shape';
 import Header from '../components/Header';
 import CheckinList from '../components/CheckinList';
 import RatingLineChart from '../components/RatingLineChart';
+import CategoryChart from '../components/CategoryChart';
 
 
 class Dashboard extends Component {
@@ -19,6 +20,7 @@ class Dashboard extends Component {
       checkins: [],
       feelingData: [],
       dateData: [],
+      categories: [],
     };
 
     // this.renderLineChart = this.renderLineChart.bind(this);
@@ -32,7 +34,7 @@ class Dashboard extends Component {
     .then((username) => {
       axios.get(`http://localhost:3000/checkins?username=${username}`)
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         this.setState({
           checkins: response.data.all_checkins,
           day_averages: response.data.day_averages
@@ -65,6 +67,7 @@ class Dashboard extends Component {
   }
 
   render() {
+
     return (
       <View>
       <Header headerText='thrive' />
@@ -72,7 +75,7 @@ class Dashboard extends Component {
         <Text>Your Checkins:</Text>
         <RatingLineChart day_averages={this.state.day_averages}/>
         <Text>Most common:</Text>
-        {this.mostCommon()}
+        <CategoryChart categories={this.state.categories} />
         <Text>This week in review:</Text>
         <CheckinList checkins={this.state.checkins}/>
       </ScrollView>

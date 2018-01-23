@@ -21,7 +21,7 @@ class CheckinList extends Component {
   }
 
   render() {
-    // console.log(this.state.checkins);
+    // console.log(this.props.);
     return (
       <View>
         {this.renderCheckins()}
