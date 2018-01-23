@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, ScrollView, View, Text, TextInput } from 'react-native';
+import { AsyncStorage, ScrollView, View, Text } from 'react-native';
 // import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import { LineChart, XAxis } from 'react-native-svg-charts';
@@ -32,7 +32,11 @@ class Dashboard extends Component {
     .then((username) => {
       axios.get(`http://localhost:3000/checkins?username=${username}`)
       .then(response => {
-        this.setState({checkins: response.data});
+        console.log(response.data);
+        this.setState({
+          checkins: response.data.all_checkins,
+          day_averages: response.data.day_averages
+        });
       })
       .catch(error => {
         console.log(error);
@@ -66,7 +70,7 @@ class Dashboard extends Component {
       <Header headerText='thrive' />
       <ScrollView>
         <Text>Your Checkins:</Text>
-        <RatingLineChart checkins={this.state.checkins}/>
+        <RatingLineChart day_averages={this.state.day_averages}/>
         <Text>Most common:</Text>
         {this.mostCommon()}
         <Text>This week in review:</Text>

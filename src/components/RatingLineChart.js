@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, ScrollView, View, Text, TextInput } from 'react-native';
-// import { Actions } from 'react-native-router-flux';
-import axios from 'axios';
+import { View, Text } from 'react-native';
 import { LineChart, XAxis } from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
 
@@ -10,41 +8,22 @@ class RatingLineChart extends Component {
     super(props);
 
     this.state = {
-      checkins: [],
       feelingData: [],
       dateData: [],
-    };
+    }
 
   }
 
-  componentWillMount() {
-    AsyncStorage.getItem('username')
-    .then((username) => {
-      axios.get(`http://localhost:3000/checkins?username=${username}`)
-      .then(response => {
-        this.setState({checkins: response.data});
+  componentWillReceiveProps(nextProps) {
+    let feelingData = [];
+    let dateData = [];
 
-        let feelingData = [];
-        let dateData = [];
-        response.data.forEach((checkin) => {
-          let feelingTotal = 0;
-          checkin.feelings.forEach((feeling) => {
-            feelingTotal += feeling.rating;
-          });
-          const feelingAvg = feelingTotal / checkin.feelings.length;
-          feelingData.push(feelingAvg);
-
-          let date = new Date(checkin.created_at);
-          date = date.getDate();
-          dateData.push(date);
-        });
-        this.setState({ feelingData: feelingData });
-        this.setState({ dateData: dateData });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    nextProps.day_averages.forEach((day) => {
+      dateData.push(day[0]);
+      feelingData.push(day[1]);
     });
+    this.setState({ feelingData: feelingData });
+    this.setState({ dateData: dateData });
   }
 
   render() {
