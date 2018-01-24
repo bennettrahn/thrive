@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 
 import { PieChart } from 'react-native-svg-charts';
-import { Circle, G, Line } from 'react-native-svg';
+import { Circle, G, Line, Rect, Text } from 'react-native-svg';
 
 
 
@@ -47,17 +47,17 @@ class CategoryChart extends Component {
     return parseInt((parseFloat(n) / total) * 100)
   }
 
-  renderCategories() {
-    return this.props.categories.map(category => {
-      if (category[2]) {
-        return <Text
-            key={category[0]}
-          >
-          {category[2]}% - {category[0]}
-          </Text>
-      }
-    });
-  }
+  // renderCategories() {
+  //   return this.props.categories.map(category => {
+  //     if (category[2]) {
+  //       return <Text
+  //           key={category[0]}
+  //         >
+  //         {category[2]}% - {category[0]}
+  //         </Text>
+  //     }
+  //   });
+  // }
 
   // render() {
   //   return (
@@ -69,51 +69,51 @@ class CategoryChart extends Component {
   // }
   render() {
 
-      const data = [];
-      this.props.categories.forEach(category => {
-        if (category[2]) {
-          data.push(category[2]);
-        }
-      });
-      data.push(this.state.other);
+    const data = [];
+    this.props.categories.forEach(category => {
+      if (category[2]) {
+        data.push(category[2]);
+      }
+    });
+    data.push(this.state.other);
 
-      const randomColor = () => ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)
+    const randomColor = () => ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)
 
-      const pieData = data
-          .filter(value => value > 0)
-          .map((value, index) => ({
-              value,
-              color: randomColor(),
-              key: `pie-${index}`,
-          }))
+    const pieData = data
+    .filter(value => value > 0)
+    .map((value, index) => ({
+      value,
+      color: randomColor(),
+      key: `pie-${index}`,
+    }))
 
-      return (
-          <PieChart
-              style={ { height: 200 } }
-              data={ pieData }
-              innerRadius={ 10 }
-              outerRadius={ 55 }
-              labelRadius={ 80 }
-              renderDecorator={ ({ item, pieCentroid, labelCentroid, index }) => (
-                  <G key={ index }>
-                      <Line
-                          x1={ labelCentroid[ 0 ] }
-                          y1={ labelCentroid[ 1 ] }
-                          x2={ pieCentroid[ 0 ] }
-                          y2={ pieCentroid[ 1 ] }
-                          stroke={ item.color }
-                      />
-                      <Circle
-                          cx={ labelCentroid[ 0 ] }
-                          cy={ labelCentroid[ 1 ] }
-                          r={ 15 }
-                          fill={ item.color }
-                      />
-                  </G>
-              ) }
+    return (
+      <PieChart
+        style={ { height: 200 } }
+        data={ pieData }
+        innerRadius={ 5 }
+        outerRadius={ 55 }
+        labelRadius={ 80 }
+        renderDecorator={ ({ item, pieCentroid, labelCentroid, index }) => (
+          <G key={ index }>
+            <Line
+              x1={ labelCentroid[ 0 ] }
+              y1={ labelCentroid[ 1 ] }
+              x2={ pieCentroid[ 0 ] }
+              y2={ pieCentroid[ 1 ] }
+              stroke={ item.color }
+            />
+            <Circle
+              cx={ labelCentroid[ 0 ] }
+              cy={ labelCentroid[ 1 ] }
+              r={ 15 }
+              fill={ item.color }
+            />
 
-          />
-      )
+          </G>
+        ) }
+      />
+    )
   }
 
 };
