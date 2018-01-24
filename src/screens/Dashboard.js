@@ -72,11 +72,11 @@ class Dashboard extends Component {
       <View>
       <Header headerText='thrive' />
       <ScrollView>
-        <Text>Your Checkins:</Text>
-        <RatingLineChart day_averages={this.state.day_averages}/>
-        <Text>Most common:</Text>
-        <CategoryChart categories={this.state.categories} />
         <Text>This week in review:</Text>
+        <RatingLineChart day_averages={this.state.day_averages}/>
+        <Text>Most Common Categories:</Text>
+        <CategoryChart categories={this.state.categories} />
+        <Text>Your Checkins:</Text>
         <CheckinList checkins={this.state.checkins}/>
       </ScrollView>
       </View>
