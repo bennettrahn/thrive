@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
-// import CheckinView from './CheckinView'
+import { PieChart } from 'react-native-svg-charts';
+import { Circle, G, Line } from 'react-native-svg';
 
-class CheckinList extends Component {
+
+
+class CategoryChart extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      total: 1
-
+      total: 1,
+      // other: 0,
     };
 
     this.renderCategories = this.renderCategories.bind(this);
@@ -17,51 +20,100 @@ class CheckinList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.categories.length > 0) {
+    // if (nextProps.categories.length > 0) {
       total = 0
       nextProps.categories.forEach(category => {
         total += category[1];
       });
       this.setState({total: total})
 
+      let other = 0
+      nextProps.categories.forEach(category => {
+        percent = parseInt((parseFloat(category[1]) / total) * 100)
 
-
-    }
+        if (percent <= 5) {
+          other += percent;
+        } else {
+          category.push(percent);
+        }
+      });
+      this.setState({
+        other: other,
+      });
+    // }
   }
 
-  figurePercent(n) {
-    const percent = parseInt((parseFloat(n) / this.state.total) * 100)
-      // if (percent <= 5) {
-      //   const other = this.state.other + percent;
-        // this.setState({
-        //   other: other,
-        // });
-      // } else {
-        return percent;
-      // }
+  figurePercent(n, total) {
+    return parseInt((parseFloat(n) / total) * 100)
   }
 
   renderCategories() {
     return this.props.categories.map(category => {
-      const percent = this.figurePercent(category[1])
-      if (category[1] === 1) {
-        console.log('haha');
+      if (category[2]) {
+        return <Text
+            key={category[0]}
+          >
+          {category[2]}% - {category[0]}
+          </Text>
       }
-      return <Text
-          key={category[0]}
-        >
-        {percent}% - {category[0]}
-        </Text>
     });
   }
 
+  // render() {
+  //   return (
+  //     <View>
+  //       {this.renderCategories()}
+  //       <Text>{this.state.other}% - other</Text>
+  //     </View>
+  //   );
+  // }
   render() {
-    // console.log(this.props.);
-    return (
-      <View>
-        {this.renderCategories()}
-      </View>
-    );
+
+      const data = [];
+      this.props.categories.forEach(category => {
+        if (category[2]) {
+          data.push(category[2]);
+        }
+      });
+      data.push(this.state.other);
+
+      const randomColor = () => ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)
+
+      const pieData = data
+          .filter(value => value > 0)
+          .map((value, index) => ({
+              value,
+              color: randomColor(),
+              key: `pie-${index}`,
+          }))
+
+      return (
+          <PieChart
+              style={ { height: 200 } }
+              data={ pieData }
+              innerRadius={ 10 }
+              outerRadius={ 55 }
+              labelRadius={ 80 }
+              renderDecorator={ ({ item, pieCentroid, labelCentroid, index }) => (
+                  <G key={ index }>
+                      <Line
+                          x1={ labelCentroid[ 0 ] }
+                          y1={ labelCentroid[ 1 ] }
+                          x2={ pieCentroid[ 0 ] }
+                          y2={ pieCentroid[ 1 ] }
+                          stroke={ item.color }
+                      />
+                      <Circle
+                          cx={ labelCentroid[ 0 ] }
+                          cy={ labelCentroid[ 1 ] }
+                          r={ 15 }
+                          fill={ item.color }
+                      />
+                  </G>
+              ) }
+
+          />
+      )
   }
 
 };
@@ -70,4 +122,4 @@ const styles = {
 
 }
 
-export default CheckinList;
+export default CategoryChart;

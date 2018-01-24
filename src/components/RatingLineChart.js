@@ -27,6 +27,7 @@ class RatingLineChart extends Component {
   }
 
   render() {
+    // console.log(LineChart);
     const data = this.state.feelingData;
     const dateData = this.state.dateData;
 
