@@ -6,6 +6,7 @@ import { LineChart, XAxis } from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
 
 import Header from '../components/Header';
+import SectionHeader from '../components/SectionHeader';
 import CheckinList from '../components/CheckinList';
 import RatingLineChart from '../components/RatingLineChart';
 import CategoryChart from '../components/CategoryChart';
@@ -16,17 +17,10 @@ class Dashboard extends Component {
     super(props);
 
     this.state = {
-      // username: null,
       checkins: [],
-      feelingData: [],
-      dateData: [],
+      day_averages: [],
       categories: [],
     };
-
-    // this.renderLineChart = this.renderLineChart.bind(this);
-    this.mostCommon = this.mostCommon.bind(this);
-    // this.checkinList = this.checkinList.bind(this);
-
   }
 
   componentWillMount() {
@@ -54,29 +48,21 @@ class Dashboard extends Component {
     });
   }
 
-  mostCommon() {
-    let topCat;
-    if (this.state.categories) {
-      topCat = this.state.categories[0][0];
-    } else {
-      topCat = "word"
-    }
-    return (
-      <Text>{topCat}</Text>
-    );
-  }
-
   render() {
 
     return (
       <View>
       <Header headerText='thrive' />
       <ScrollView>
-        <Text>This week in review:</Text>
+
+        <View style={styles.gapStyle}></View>
+        <SectionHeader headerText="This Week In Review" />
         <RatingLineChart day_averages={this.state.day_averages}/>
-        <Text>Most Common Categories:</Text>
+
+        <SectionHeader headerText="Most Common Categories" />
         <CategoryChart categories={this.state.categories} />
-        <Text>Your Checkins:</Text>
+
+        <SectionHeader headerText="Your Checkins" />
         <CheckinList checkins={this.state.checkins}/>
       </ScrollView>
       </View>
@@ -85,8 +71,8 @@ class Dashboard extends Component {
 }
 
 const styles = {
-  chartWholeStyle: {
-    margin: 20,
+  gapStyle: {
+    height: 10,
   }
 }
 
