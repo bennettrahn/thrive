@@ -91,7 +91,7 @@ class LoginForm extends Component {
             value={this.state.password}
             autoCapitalize='none'
           />
-
+          <View style={{marginTop: 40}} />
           <Button onPress={this.userLogin.bind(this)}>Login</Button>
           <Button onPress={this.userSignup.bind(this)}>Create an Account</Button>
         </View>

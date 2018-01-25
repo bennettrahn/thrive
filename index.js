@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, ActivityIndicator, AsyncStorage, Text, View } from 'react-native';
+import { AppRegistry, ActivityIndicator, AsyncStorage, Text, View, Image } from 'react-native';
 import { Router, Scene, Actions } from 'react-native-router-flux';
 import LoginForm from './src/screens/LoginForm';
 import Checkin from './src/screens/Checkin';
@@ -40,17 +40,17 @@ class App extends Component {
                 tabs={true}
                 tabbarStyle={{ backgroundColor: 'green' }}
               >
+                <Scene key='Checkin'
+                  hideNavBar={true}
+                  icon={() => <Image style={{height: 30, width: 30}} source={require('./feel_icon.png')}/>}
+                  component={Checkin}
+                  title='Checkin'
+                />
                 <Scene key='Dashboard'
-                  icon={() => <Text>;)</Text>}
+                  icon={() => <Image style={{height: 30, width: 30}} source={require('./dashboard_icon.png')}/>}
                   hideNavBar={true}
                   component={Dashboard}
                   title='Dashboard'
-                />
-                <Scene key='Checkin'
-                  hideNavBar={true}
-                  icon={() => <Text>:P</Text>}
-                  component={Checkin}
-                  title='Checkin'
                 />
               </Scene>
             </Scene>

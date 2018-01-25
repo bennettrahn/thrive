@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { TextInput, View } from 'react-native';
 import Button from './Button';
 
+
 class CheckinDescription extends Component {
   state = {
     text: ''
@@ -15,6 +16,7 @@ class CheckinDescription extends Component {
           value={this.state.text}
           autoCapitalize='none'
           style={styles.textBoxStyle}
+          multiline={true}
         />
         <Button onPress={() => {this.props.saveCheckin(this.state.text)}}>Next</Button>
       </View>

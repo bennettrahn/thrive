@@ -28,30 +28,17 @@ class RatingLineChart extends Component {
 
   render() {
     // console.log(LineChart);
-    // const data = this.state.feelingData;
-    const data = [4.625, 0, 3, 3, 3.95, 1, 5]
-    console.log(data);
+    const data = this.state.feelingData;
     const dateData = this.state.dateData;
-    const contentInset = { top: 20, bottom: 20 }
 
     return (
       <View style={styles.chartWholeStyle}>
-        <View style={ { flexDirection: 'row' } }>
-          <YAxis
-            dataPoints={ data }
-            min={ 0 }
-            max={ 5 }
-            labelStyle={ { color: 'grey' } }
-            formatLabel={ value => value }
-            contentInset={ contentInset }
-          />
           <LineChart
-            style={ { height: 200, flex: 1, marginLeft: 16 } }
-            contentInset={ contentInset }
+            style={ { height: 200} }
             dataPoints={ data }
             numberOfTicks={ 6 }
             fillColor={ 'purple' }
-            shadowOffset={1}
+            shadowOffset={.5}
             svg={ {
               stroke: 'rgb(134, 65, 244)',
             } }
@@ -62,7 +49,6 @@ class RatingLineChart extends Component {
             contentInset={ { top: 20, bottom: 20 } }
             curve={shape.curveLinear}
           />
-        </View>
 
         <XAxis
           style={ { paddingVertical: 10 } }

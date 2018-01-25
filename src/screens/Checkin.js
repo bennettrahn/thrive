@@ -8,6 +8,7 @@ import Header from '../components/Header';
 import CheckinDescription from '../components/CheckinDescription';
 import axios from 'axios';
 
+
 class Checkin extends Component {
   constructor(props) {
     super(props);
@@ -99,12 +100,22 @@ class Checkin extends Component {
 
   renderSearchBar() {
     if (!this.state.next) {
+      let viewStyle;
+      if (this.state.searchedFeelings.length === 0) {
+        viewStyle = {
+          // height: 500,
+          flex: 1,
+          justifyContent: 'center'
+        }
+      }
       return (
-        <View>
-          <Text>I am feeling ...</Text>
-          <SearchBar
-            setSearchedFeelings={this.setSearchedFeelings}
-          />
+        <View style={{padding: 10}}>
+          <View style={viewStyle}>
+            <Text style={styles.textStyle}>I am feeling ...</Text>
+            <SearchBar
+              setSearchedFeelings={this.setSearchedFeelings}
+            />
+          </View>
           <FeelingsList
             handleFeelingClick={this.handleFeelingClick}
             feelings={this.state.searchedFeelings}
@@ -116,18 +127,23 @@ class Checkin extends Component {
 
   render() {
     return (
+      <View>
+      <Header headerText='thrive' />
       <ScrollView>
-        <Header headerText='thrive' />
         <FeelingsList feelings={this.state.checkInFeelings}/>
         {this.nextButton()}
         {this.renderSearchBar()}
       </ScrollView>
+      </View>
     );
   }
 }
 
 const styles = {
+  textStyle: {
 
+    fontSize: 18
+  }
 }
 
 export default Checkin;
